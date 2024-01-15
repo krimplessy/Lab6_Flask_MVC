@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% macro render_table(table_name, relation) %}
+    {% if not relation.empty %}
+    <p>
+        <b>{{ table_name }} </b>
+    </p>
+    <table>
+        <tr>
+            {% for name in relation.dtypes.index %}
+            {% if name != id %}
+            <th>{{ name }}</th>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        <tbody>
+        {% for i in range(len(relation)) %}
+        <tr>
+                {% for name in relation.dtypes.index %}
+            {% if name != id %}
+                <td>
+                    {{ relation.loc[i, name]}}
+                </td>
+
+            {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+    {% endif %}
+    {% endmacro %}
+    <link rel="stylesheet" type="text/css" href="/static/CSS/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/CSS/style_book.css"/>
+
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+</head>
+<body>
+    <div class=menu>
+    <ul>
+        <li><a href={{ url_for("index") }}>Читатель</a></li>
+        <li><a href={{ url_for("search") }}>Книги</a></li>
+        <li  class=active><a href={{ url_for("statistics") }}>Статистика</a></li>
+    </ul>
+    </div>
+        <form class="form" action="{{ url_for('statistics') }}" method="get">
+            <input type="date" placeholder="Начало периода" name="dateStart">
+            <input type="date" placeholder="Конец периода" name="dateEnd">
+            <input name="submitGetPopularBook" value="Найти самую популярную книгу" class="knopka" type="submit">
+        </form>
+
+    {{ render_table("Самая популярная книга",most_popular_book_df) }}
+
+</body>
+</html>
