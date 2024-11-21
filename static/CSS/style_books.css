@@ -1,0 +1,73 @@
+    select {
+        width: 150px;
+        padding:5px;
+        border-radius:7px;
+        text-align: center;
+}
+    input{
+        width: autho;
+        padding:5px;
+        border-radius:4px;
+        text-align: center;
+    }
+
+
+label:hover {
+ background:#eee;
+ cursor:pointer;
+}
+
+.form{
+    border: 5px inset #91b44a;
+    padding: 10px;
+    background: rgba(145, 180, 74, 0.4);
+    border-radius: 10px;
+    width: 180px;
+
+}
+    .container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        grid-gap:30px;
+
+    }
+
+    .button{
+    border-radius: 7px;
+    transition: .2s linear;
+}
+
+.knopka:hover {
+    background: rgba(163, 205, 90, 0.14);
+}
+.knopka:active {
+    background: rgba(163, 205, 90);
+}
+.grid {
+    display: grid;
+  grid-template-columns: repeat(3, 320px);
+  grid-auto-rows: 150px 150px 150px;
+      grid-gap: 10px;
+
+  }
+ .grid>*{
+     /*дизайн*/
+    margin: 2px;
+    border: 5px inset #91b44a
+}
+ .grid_knopka{
+     padding: 1px;
+     float:right;
+     margin-right: 5px;
+     margin-top: -1px;
+ }
+.grid_knopka:hover {
+    background: rgba(163, 205, 90, 0.14);
+}
+.grid_knopka:active {
+    background: rgba(163, 205, 90);
+}
+.detail_lables{
+
+}

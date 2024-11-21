@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск книги</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style_books.css">
+
+    <!—---------------------------------- Макросы --------------------------------------------------------->
+
+    {% macro render_list(title, name, relation, selected) %}
+
+        <details open>
+            <summary>{{ title }}</summary>
+            {% set n = len(relation) %}
+            {% for i in range(n) %}
+                {% if relation.iloc[i][0] in selected %}
+                    <input checked type="checkbox" name={{ name }} value='{{ relation.iloc[i][0] }}' id=
+                            {{ name }}{{ i }}>
+                    <label for={{ name }}{{ i }} class="details_label">{{ relation.iloc[i][0] }}
+                        ({{ relation.iloc[i][1] }})</label>
+                    <br>
+                {% else %}
+                    <input type="checkbox" name={{ name }} value='{{ relation.iloc[i][0] }}' id=
+                            {{ name }}{{ i }}>
+                    <label for={{ name }}{{ i }} >{{ relation.iloc[i][0] }}
+                        ({{ relation.iloc[i][1] }})</label>
+                    <br>
+                {% endif %}
+            {% endfor %}
+        </details>
+
+    {% endmacro %}
+
+    {% macro grid_list(relation, relation_name) %}
+
+        {% set n = len(relation) %}
+        {% for i in range(n) %}
+            <div class="{{ i }}">
+
+                {% for name in relation.dtypes.index[1:] %}
+                    <b>{{ name }}: </b>{{ relation.loc[i][name] }}<br>
+                {% endfor %}
+
+
+
+                <form method="get">
+                    <button  {% if relation.loc[i, 'Количество'] == 0 %}
+                           disabled
+                            {% endif %} type="submit" name={{ relation_name }} class="grid_knopka"
+                            value="{{ relation.loc[i]['book_id'] }}"
+                            style="float: right;">
+                        Выбрать
+                    </button>
+                </form>
+            </div>
+
+        {% endfor %}
+
+    {% endmacro %}
+
+    <!—---------------------------------- Макросы --------------------------------------------------------->
+
+</head>
+<body>
+<div class=menu>
+    <ul>
+        <li><a href={{ url_for("index") }}>Читатель</a></li>
+        <li class=active><a href={{ url_for("search") }}>Книги</a></li>
+        <li><a href= {{ url_for("statistics") }} >Статистика</a></li>
+    </ul>
+</div>
+<div class="container">
+    <div class="form">
+        <form>
+            {{ render_list("Автор", "author", author, author_list) }}
+            {{ render_list("Жанр", "genre", genre, genre_list) }}
+            {{ render_list("Издательство", "publisher", publisher, publisher_list) }}
+            <p>
+                <input type="submit" class="knopka" value="Найти" style="float: left; display: inline; width: 88px;">
+            </p>
+        </form>
+        <form action="{{ url_for('search') }}" method="get" style="float: right; display: inline;">
+            <input type="submit" class="knopka" value="Очистить" style="width: 88px;">
+        </form>
+    </div>
+    <div>
+        <form>
+            {% if len(genre_list) != 0 %}
+                <b>Жанры: </b>
+                {% for i in range(len(genre_list) - 1) %}
+                    {{ genre_list[i] }},
+                {% endfor %}
+                {{ genre_list[len(genre_list) - 1] }}.
+            {% endif %}
+        </form>
+        <form>
+            {% if len(author_list)!=0 %}
+                <b>Авторы: </b>
+                {% for i in range(len(author_list) - 1) %}
+                    {{ author_list[i] }},
+                {% endfor %}
+                {{ author_list[len(author_list) - 1] }}.
+            {% endif %}
+        </form>
+        <form>
+            {% if len(publisher_list) != 0 %}
+                <b>Издательства: </b>
+                {% for i in range(len(publisher_list) - 1) %}
+                    {{ publisher_list[i] }},
+                {% endfor %}
+                {{ publisher_list[len(publisher_list) - 1] }}.
+            {% endif %}
+        </form>
+
+        <p>
+        <div class="grid">
+            {{ grid_list(book_info, 'book') }}
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
